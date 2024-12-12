@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080" # Mapea el puerto 8080 al host
+    depends_on:
+      - mongo # Asegura que MongoDB esté disponible antes de arrancar
+    environment:
+      MONGO_URI: mongodb://mongo:27017/productdb # Configura la URI de MongoDB
+
+  mongo:
+    image: mongo:6.0
+    container_name: mongodb
+    ports:
+      - "27017:27017" # Mapea el puerto 27017 al host
+    volumes:
+      - mongo-data:/data/db # Persistencia de datos
+
+volumes:
+  mongo-data:
